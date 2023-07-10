@@ -1,5 +1,8 @@
 
+import 'package:app_weather/controller.dart';
+import 'package:app_weather/model/forecast_data.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreenUi extends StatefulWidget {
   const SplashScreenUi({super.key});
@@ -9,20 +12,37 @@ class SplashScreenUi extends StatefulWidget {
 }
 
 class _SplashScreenUiState extends State<SplashScreenUi> {
+
+
+
+  @override
+  void initState() {
+    super.initState();
+
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     double heightScreen = MediaQuery.of(context).size.height;
     double widthScreen = MediaQuery.of(context).size.width;
+      final meuModelo = Provider.of<PostosController>(context);
+      // meuModelo.getPosicao();
 
     return Scaffold(
-      appBar: AppBar(title: const Text("Previsão do tempo"), centerTitle: true),
-      body: Column(
-        children: [
-          weatherPictures(heightScreen),
-          localInfos(heightScreen),
-          weatherInfos(heightScreen ,widthScreen)
-        ]
+      appBar: AppBar(title: Text("${meuModelo.forecastData.temp}"), centerTitle: true),
+      body: Consumer<ForecastData>(
+        builder: (context, forecastData, child) {
+          return Column(
+            children: [
+              weatherPictures(heightScreen),
+              localInfos(heightScreen, forecastData),
+              weatherInfos(heightScreen ,widthScreen)
+            ]
+          );
+        },
       ),
+      floatingActionButton: FloatingActionButton(onPressed: () => meuModelo.getPosicao()),
     );
   }
 
@@ -35,12 +55,12 @@ class _SplashScreenUiState extends State<SplashScreenUi> {
     );
   }
 
-  Widget localInfos(double heightScreen){
+  Widget localInfos(double heightScreen, ForecastData forecastData){
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 30),
       child: Column(
         children: [
-          Text("30 °C", style: TextStyle(fontSize: heightScreen * 0.06)),
+          Text("${forecastData.temp}", style: TextStyle(fontSize: heightScreen * 0.06)),
           Text("London, UK", style: TextStyle(fontSize: heightScreen * 0.02)),
           Text("Sunny", style: TextStyle(fontSize: heightScreen * 0.02)),
         ],

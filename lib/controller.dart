@@ -1,16 +1,23 @@
+import 'package:app_weather/model/forecast_data.dart';
 import 'package:geolocator/geolocator.dart';
+import 'service/weather_service.dart';
 
 class PostosController{
 
   double latitude = 0.0;
   double longitude = 0.0;
   String error = "";
+  ForecastData forecastData = ForecastData();
+
+  WeatherService weatherService = WeatherService();
 
   getPosicao() async{
     try{
       Position position = await _posicaoAtual();
       latitude = position.latitude;
       longitude = position.longitude;
+
+      forecastData = await weatherService.getCurrentInfo(latitude, longitude);
     }catch(e){
       print("ERROR: $e");
     }

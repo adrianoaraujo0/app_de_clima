@@ -1,7 +1,17 @@
+import 'package:app_weather/model/forecast_data.dart';
 import 'package:app_weather/view/splash_screen/splash_screen_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ForecastData(),
+      child: const MyApp(),
+    )
+  );
+  
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -13,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: SplashScreenUi(),
+      home: const SplashScreenUi(),
     );
   }
 }
